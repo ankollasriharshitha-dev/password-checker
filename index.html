@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="PassGuard — Professional password strength checker with crack time estimation and password generator." />
+  <title>PassGuard · Password Strength</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=Outfit:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- Decorative layers -->
+  <div class="grain" aria-hidden="true"></div>
+  <div class="ambient" aria-hidden="true">
+    <div class="orb orb--violet"></div>
+    <div class="orb orb--rose"></div>
+    <div class="orb orb--teal"></div>
+  </div>
+  <div class="geo-lines" aria-hidden="true">
+    <div class="geo-line geo-line--1"></div>
+    <div class="geo-line geo-line--2"></div>
+    <div class="geo-line geo-line--3"></div>
+  </div>
+
+  <!-- ── PAGE WRAPPER ───────────────────────────────── -->
+  <div class="page-wrapper">
+
+    <!-- ── SITE HEADER ──────────────────────────────── -->
+    <header class="site-header" role="banner">
+      <div class="brand">
+        <span class="brand__dot" aria-hidden="true"></span>
+        <span class="brand__name">PassGuard</span>
+        <span class="brand__badge">v2.0</span>
+      </div>
+
+      <!-- Dark / Light mode toggle -->
+      <button class="theme-toggle" id="theme-toggle"
+        aria-label="Switch to light mode" title="Toggle theme">
+        <!-- Moon icon (shown in dark mode) -->
+        <svg class="theme-icon theme-icon--moon" viewBox="0 0 24 24" fill="none"
+          xmlns="http://www.w3.org/2000/svg" width="16" height="16" aria-hidden="true">
+          <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"
+            stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <!-- Sun icon (shown in light mode) -->
+        <svg class="theme-icon theme-icon--sun hidden" viewBox="0 0 24 24" fill="none"
+          xmlns="http://www.w3.org/2000/svg" width="16" height="16" aria-hidden="true">
+          <circle cx="12" cy="12" r="5" stroke="currentColor" stroke-width="1.8"/>
+          <line x1="12" y1="1"  x2="12" y2="3"  stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+          <line x1="12" y1="21" x2="12" y2="23" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+          <line x1="4.22" y1="4.22"  x2="5.64" y2="5.64"  stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+          <line x1="18.36" y1="18.36" x2="19.78" y2="19.78" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+          <line x1="1"  y1="12" x2="3"  y2="12" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+          <line x1="21" y1="12" x2="23" y2="12" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+          <line x1="4.22" y1="19.78" x2="5.64" y2="18.36" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+          <line x1="18.36" y1="5.64" x2="19.78" y2="4.22" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+        </svg>
+        <span class="theme-toggle__label">Light</span>
+      </button>
+    </header>
+
+    <!-- ── MAIN CARD ─────────────────────────────────── -->
+    <main class="card" role="main" id="main-card">
+
+      <div class="card__accent" aria-hidden="true"></div>
+
+      <!-- ── HEADER ────────────────────────────────── -->
+      <header class="card__header">
+        <div class="card__eyebrow">
+          <span class="eyebrow__line" aria-hidden="true"></span>
+          <span class="eyebrow__text">Security Checker</span>
+          <span class="eyebrow__line" aria-hidden="true"></span>
+        </div>
+        <h1 class="card__title">
+          How strong is<br />
+          <em class="card__title-em">your password?</em>
+        </h1>
+        <p class="card__subtitle">
+          Real-time analysis with crack time estimation. Private &amp; secure — runs entirely in your browser.
+        </p>
+      </header>
+
+      <!-- ── INPUT SECTION ─────────────────────────── -->
+      <section class="card__body" aria-label="Password input and analysis">
+
+        <div class="field">
+          <label class="field__label" for="password-input">Your password</label>
+
+          <div class="field__input-row">
+            <input
+              class="field__input"
+              id="password-input"
+              type="password"
+              placeholder="Enter a password to analyse…"
+              autocomplete="new-password"
+              spellcheck="false"
+              aria-describedby="strength-text crack-time-value"
+            />
+
+            <!-- Show/hide toggle -->
+            <button class="field__toggle" id="toggle-btn" type="button"
+              aria-label="Show password" title="Toggle visibility">
+              <svg class="eye-icon" id="icon-eye-open" viewBox="0 0 24 24" fill="none"
+                xmlns="http://www.w3.org/2000/svg" width="17" height="17" aria-hidden="true">
+                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"
+                  stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+                <circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="1.8"/>
+              </svg>
+              <svg class="eye-icon hidden" id="icon-eye-closed" viewBox="0 0 24 24" fill="none"
+                xmlns="http://www.w3.org/2000/svg" width="17" height="17" aria-hidden="true">
+                <line x1="17.94" y1="17.94" x2="22" y2="22" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+                <line x1="1" y1="1" x2="6.06" y2="6.06" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+                <path d="M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19"
+                  stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+                <path d="M6.64 6.64A18.5 18.5 0 0 0 1 12s4 8 11 8a9.12 9.12 0 0 0 4.77-1.37"
+                  stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        <!-- Loading bar (shown briefly while "analysing") -->
+        <div class="loading-bar" id="loading-bar" aria-hidden="true">
+          <div class="loading-bar__fill" id="loading-fill"></div>
+        </div>
+
+        <!-- ── STRENGTH METER ─────────────────────── -->
+        <div class="meter" aria-live="polite" aria-label="Password strength indicator">
+          <div class="meter__header">
+            <span class="meter__label">Strength</span>
+            <span class="meter__value" id="strength-text">— type to begin</span>
+          </div>
+          <div class="meter__segments" role="progressbar"
+            aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"
+            aria-label="Password strength bar">
+            <div class="seg" id="seg-1"></div>
+            <div class="seg" id="seg-2"></div>
+            <div class="seg" id="seg-3"></div>
+            <div class="seg" id="seg-4"></div>
+          </div>
+          <div class="meter__bar-track">
+            <div class="meter__bar-fill" id="progress-bar"></div>
+          </div>
+        </div>
+
+        <!-- ── CRACK TIME PANEL ───────────────────── -->
+        <div class="crack-panel" id="crack-panel" aria-label="Estimated crack time">
+          <div class="crack-panel__inner">
+            <div class="crack-panel__left">
+              <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"
+                width="15" height="15" aria-hidden="true">
+                <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="1.8"/>
+                <polyline points="12,6 12,12 16,14" stroke="currentColor"
+                  stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+              <span class="crack-panel__label">Est. time to crack</span>
+            </div>
+            <span class="crack-panel__value" id="crack-time-value">—</span>
+          </div>
+          <p class="crack-panel__sub" id="crack-time-sub">Enter a password to see crack time estimation</p>
+        </div>
+
+      </section>
+
+      <!-- ── DIVIDER ────────────────────────────────── -->
+      <div class="card__divider" aria-hidden="true">
+        <span class="divider__label">Requirements</span>
+      </div>
+
+      <!-- ── RULES GRID ─────────────────────────────── -->
+      <section class="card__suggestions" aria-label="Password requirements">
+        <ul class="rules-grid" id="suggestions-list" role="list">
+          <li class="rule" id="rule-length" data-rule="length">
+            <div class="rule__check" aria-hidden="true">
+              <svg class="rule__check-icon" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <polyline points="2,6 5,9 10,3" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </div>
+            <span class="rule__text">8+ characters</span>
+          </li>
+          <li class="rule" id="rule-uppercase" data-rule="uppercase">
+            <div class="rule__check" aria-hidden="true">
+              <svg class="rule__check-icon" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <polyline points="2,6 5,9 10,3" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </div>
+            <span class="rule__text">Uppercase letter</span>
+          </li>
+          <li class="rule" id="rule-lowercase" data-rule="lowercase">
+            <div class="rule__check" aria-hidden="true">
+              <svg class="rule__check-icon" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <polyline points="2,6 5,9 10,3" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </div>
+            <span class="rule__text">Lowercase letter</span>
+          </li>
+          <li class="rule" id="rule-number" data-rule="number">
+            <div class="rule__check" aria-hidden="true">
+              <svg class="rule__check-icon" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <polyline points="2,6 5,9 10,3" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </div>
+            <span class="rule__text">Number (0–9)</span>
+          </li>
+          <li class="rule" id="rule-special" data-rule="special">
+            <div class="rule__check" aria-hidden="true">
+              <svg class="rule__check-icon" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <polyline points="2,6 5,9 10,3" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </div>
+            <span class="rule__text">Special symbol</span>
+          </li>
+          <li class="rule" id="rule-length-great" data-rule="length-great">
+            <div class="rule__check" aria-hidden="true">
+              <svg class="rule__check-icon" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <polyline points="2,6 5,9 10,3" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </div>
+            <span class="rule__text">12+ chars (bonus)</span>
+          </li>
+        </ul>
+      </section>
+
+      <!-- ── ACTION BUTTONS ─────────────────────────── -->
+      <div class="card__divider" aria-hidden="true">
+        <span class="divider__label">Tools</span>
+      </div>
+
+      <section class="card__actions" aria-label="Password tools">
+        <!-- Generate password -->
+        <button class="action-btn action-btn--generate" id="generate-btn" type="button"
+          aria-label="Generate a strong random password">
+          <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"
+            width="16" height="16" aria-hidden="true">
+            <polyline points="23,4 23,10 17,10" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          <span>Generate Strong Password</span>
+        </button>
+
+        <!-- Copy password -->
+        <button class="action-btn action-btn--copy" id="copy-btn" type="button"
+          aria-label="Copy password to clipboard" disabled>
+          <svg class="copy-icon" id="copy-icon-default" viewBox="0 0 24 24" fill="none"
+            xmlns="http://www.w3.org/2000/svg" width="15" height="15" aria-hidden="true">
+            <rect x="9" y="9" width="13" height="13" rx="2" ry="2"
+              stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"
+              stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          <svg class="copy-icon hidden" id="copy-icon-done" viewBox="0 0 24 24" fill="none"
+            xmlns="http://www.w3.org/2000/svg" width="15" height="15" aria-hidden="true">
+            <polyline points="20,6 9,17 4,12" stroke="currentColor"
+              stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          <span id="copy-btn-label">Copy</span>
+        </button>
+      </section>
+
+      <!-- ── SECURITY TIPS ──────────────────────────── -->
+      <div class="card__divider" aria-hidden="true">
+        <span class="divider__label">Security Tips</span>
+      </div>
+
+      <section class="tips-section" aria-label="Cybersecurity tips">
+        <div class="tips-grid">
+
+          <article class="tip-card" tabindex="0">
+            <div class="tip-card__icon" aria-hidden="true">🔑</div>
+            <h3 class="tip-card__title">Use a Password Manager</h3>
+            <p class="tip-card__body">Store unique passwords for every site. Never reuse passwords across accounts.</p>
+          </article>
+
+          <article class="tip-card" tabindex="0">
+            <div class="tip-card__icon" aria-hidden="true">📱</div>
+            <h3 class="tip-card__title">Enable 2FA</h3>
+            <p class="tip-card__body">Two-factor authentication adds a second lock — even if your password leaks, your account stays safe.</p>
+          </article>
+
+          <article class="tip-card" tabindex="0">
+            <div class="tip-card__icon" aria-hidden="true">🎲</div>
+            <h3 class="tip-card__title">Use Passphrases</h3>
+            <p class="tip-card__body">Four random words like "lamp-river-clock-tide" are both memorable and extremely hard to crack.</p>
+          </article>
+
+          <article class="tip-card" tabindex="0">
+            <div class="tip-card__icon" aria-hidden="true">🚫</div>
+            <h3 class="tip-card__title">Avoid Personal Info</h3>
+            <p class="tip-card__body">Birthdates, names, and pet names are the first things attackers try. Keep passwords random.</p>
+          </article>
+
+        </div>
+      </section>
+
+      <!-- ── CARD FOOTER ────────────────────────────── -->
+      <footer class="card__footer">
+        <div class="card__footer-inner">
+          <svg viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"
+            width="12" height="12" aria-hidden="true">
+            <path d="M8 1L2 3.5V8c0 3.3 2.5 5.8 6 7 3.5-1.2 6-3.7 6-7V3.5L8 1z"
+              stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/>
+          </svg>
+          <p class="footer__text">100% private — all checks run in your browser. Nothing is ever sent anywhere.</p>
+        </div>
+      </footer>
+
+    </main>
+
+    <footer class="site-footer" role="contentinfo">
+      <p>Built with HTML · CSS · JavaScript &nbsp;/&nbsp; PassGuard v2.0</p>
+    </footer>
+
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
